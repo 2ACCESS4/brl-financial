@@ -1,9 +1,13 @@
 [build]
-  command = "npm run build"
+  command = "chmod +x netlify-build.sh && ./netlify-build.sh"
   publish = "dist/client"
   
 [functions]
   directory = "netlify/functions"
+
+# Environment variables
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/api/*"

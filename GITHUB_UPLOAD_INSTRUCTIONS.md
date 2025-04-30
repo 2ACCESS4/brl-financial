@@ -84,6 +84,7 @@ Here's a checklist of the files and directories you should upload:
 
 - [ ] package.json
 - [ ] netlify.toml
+- [ ] netlify-build.sh (new build script that fixes the deployment issue)
 - [ ] vite.config.ts
 - [ ] tsconfig.json
 - [ ] postcss.config.js
@@ -97,11 +98,19 @@ Here's a checklist of the files and directories you should upload:
 
 ## Troubleshooting Netlify Deployment
 
-If you get the "npm error code ENOENT" or "Cannot find package.json" error:
+### If you get the "npm error code ENOENT" or "Cannot find package.json" error:
 1. Check your GitHub repository structure
 2. Make sure package.json is at the root level
 3. Make sure you're not uploading from inside a subfolder
 4. Re-upload with the correct structure and redeploy
+
+### If you get the "Deploy directory 'dist/client' does not exist" error:
+1. Make sure you've included the `netlify-build.sh` script in your repository
+2. Verify that `netlify.toml` is using this script as the build command
+3. The script will automatically:
+   - Create the dist/client directory
+   - Copy files from dist/public to dist/client (addressing the vite.config.ts outDir setting)
+   - Create a fallback index.html if needed
 
 ## Setting Up Environment Variables in Netlify
 
