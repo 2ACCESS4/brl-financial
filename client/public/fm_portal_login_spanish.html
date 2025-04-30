@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FM Portal Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .form-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Inicio de Sesión Portal FM</h2>
+        <form action="https://www.fmweb3.com/FMBRL/FMInsuredLogin.asp" method="post">
+            <div class="form-group">
+                <label for="AccountCode">Código de Cuenta:</label>
+                <input type="text" id="AccountCode" name="AccountCode" required>
+            </div>
+            <div class="form-group">
+                <label for="Password">Contraseña:</label>
+                <input type="password" id="Password" name="Password" required>
+            </div>
+            <input type="hidden" name="Submit" value="Submit">
+            <input type="hidden" name="Lang" value="S">
+            <button type="submit" class="btn">Iniciar Sesión</button>
+            <div class="form-footer">
+                <p>¿No tiene una cuenta? <a href="https://www.fmweb3.com/FMBRL/FMInsuredRegistration.asp">Regístrese aquí</a></p>
+                <p><a href="https://www.fmweb3.com/FMBRL/FMInsuredForgotPassword.asp">¿Olvidó su contraseña?</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
