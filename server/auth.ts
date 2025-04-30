@@ -1,0 +1,139 @@
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Express } from "express";
+import session from "express-session";
+import { scrypt, randomBytes, timingSafeEqual } from "crypto";
+import { promisify } from "util";
+import { storage } from "./storage";
+import { User as SelectUser, loginSchema } from "@shared/schema";
+
+declare global {
+  namespace Express {
+    interface User extends SelectUser {}
+  }
+}
+
+const scryptAsync = promisify(scrypt);
+
+async function hashPassword(password: string) {
+  const salt = randomBytes(16).toString("hex");
+  const buf = (await scryptAsync(password, salt, 64)) as Buffer;
+  return `${buf.toString("hex")}.${salt}`;
+}
+
+async function comparePasswords(supplied: string, stored: string) {
+  const [hashed, salt] = stored.split(".");
+  const hashedBuf = Buffer.from(hashed, "hex");
+  const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
+  return timingSafeEqual(hashedBuf, suppliedBuf);
+}
+
+export function setupAuth(app: Express) {
+  // Generate a random secret key for sessions
+  const sessionSecret = process.env.SESSION_SECRET || randomBytes(32).toString('hex');
+  
+  const sessionSettings: session.SessionOptions = {
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    store: storage.sessionStore,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 // 24 hours
+    }
+  };
+
+  app.set("trust proxy", 1);
+  app.use(session(sessionSettings));
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  // Configure passport to use account code instead of username
+  passport.use(
+    new LocalStrategy(
+      { 
+        usernameField: 'accountCode',
+        passwordField: 'password'
+      },
+      async (accountCode, password, done) => {
+        const user = await storage.getUserByAccountCode(accountCode);
+        if (!user || !(await comparePasswords(password, user.password))) {
+          return done(null, false, { message: 'Invalid account code or password' });
+        } else {
+          // Update last login time
+          await storage.updateLastLogin(user.id);
+          return done(null, user);
+        }
+      }
+    )
+  );
+
+  passport.serializeUser((user, done) => done(null, user.id));
+  
+  passport.deserializeUser(async (id: number, done) => {
+    try {
+      const user = await storage.getUser(id);
+      done(null, user);
+    } catch (err) {
+      done(err);
+    }
+  });
+
+  // API routes for authentication
+  app.post("/api/login", (req, res, next) => {
+    try {
+      // Validate request body
+      const loginData = loginSchema.parse(req.body);
+      
+      passport.authenticate('local', (err: Error, user: Express.User, info: any) => {
+        if (err) return next(err);
+        if (!user) {
+          return res.status(401).json({ message: info?.message || 'Login failed' });
+        }
+        
+        req.login(user, (err) => {
+          if (err) return next(err);
+          return res.status(200).json(user);
+        });
+      })(req, res, next);
+    } catch (error) {
+      return res.status(400).json({ message: 'Invalid input data' });
+    }
+  });
+
+  app.post("/api/logout", (req, res, next) => {
+    req.logout((err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
+    });
+  });
+
+  app.get("/api/user", (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    res.json(req.user);
+  });
+  
+  // Registration endpoint - typically would be admin-only in production
+  app.post("/api/register", async (req, res, next) => {
+    try {
+      const existingUser = await storage.getUserByAccountCode(req.body.accountCode);
+      if (existingUser) {
+        return res.status(400).json({ message: "Account code already exists" });
+      }
+
+      const hashedPassword = await hashPassword(req.body.password);
+      const user = await storage.createUser({
+        ...req.body,
+        password: hashedPassword,
+      });
+
+      req.login(user, (err) => {
+        if (err) return next(err);
+        res.status(201).json(user);
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.status(500).json({ message: "Registration failed" });
+    }
+  });
+}
