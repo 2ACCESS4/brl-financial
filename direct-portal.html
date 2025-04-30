@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BRL Financial - Portal Access</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    header {
+      background-color: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 0;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #155e75;
+    }
+    .logo svg {
+      margin-right: 0.75rem;
+    }
+    .contact-info {
+      text-align: right;
+    }
+    .contact-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+    }
+    .contact-items {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+    }
+    .contact-item svg {
+      margin-right: 0.375rem;
+      color: #0e7490;
+    }
+    .contact-phone {
+      font-weight: 600;
+      color: #0e7490;
+    }
+    .contact-email {
+      color: #0e7490;
+      text-decoration: none;
+    }
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+    
+    /* Tabs styling */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e2e8f0;
+      background-color: #f8fafc;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      color: #475569;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .tab:hover {
+      color: #0e7490;
+      background-color: rgba(14, 116, 144, 0.05);
+    }
+    .tab.active {
+      color: #0e7490;
+      border-bottom-color: #0e7490;
+      background-color: rgba(14, 116, 144, 0.05);
+    }
+    .tab svg {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Main content area */
+    .main-content {
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+    .info-box {
+      max-width: 36rem;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+    }
+    .shield-icon {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto 1rem;
+      color: #0e7490;
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      color: #0f172a;
+    }
+    p {
+      margin: 0 0 1.5rem;
+      color: #475569;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .feature {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      border-radius: 0.375rem;
+    }
+    .feature svg {
+      color: #0d9488;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+    .feature-text {
+      color: #134e4a;
+      font-size: 0.875rem;
+    }
+    
+    /* Login form */
+    .login-form {
+      max-width: 24rem;
+      margin: 2rem auto 0;
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      text-align: left;
+    }
+    .form-title {
+      font-size: 1.25rem;
+      margin: 0 0 1.5rem;
+      color: #0f172a;
+      text-align: center;
+    }
+    .form-field {
+      margin-bottom: 1.25rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #334155;
+      font-size: 0.875rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.625rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+    input:focus {
+      outline: 2px solid #0e7490;
+      border-color: transparent;
+    }
+    .submit-button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #0e7490;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+    .submit-button:hover {
+      background-color: #155e75;
+    }
+    .forgot-password {
+      font-size: 0.75rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .forgot-password a {
+      color: #0e7490;
+      text-decoration: none;
+    }
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Status overlay */
+    .status-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+    .status-box {
+      background-color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .spinner {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 3px solid #cbd5e1;
+      border-top-color: #0e7490;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .status-text {
+      font-weight: 500;
+      color: #0f172a;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          BRL Financial
+        </div>
+        
+        <div class="contact-info">
+          <div class="contact-label">Questions? Contact us:</div>
+          <div class="contact-items">
+            <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span class="contact-phone">561-200-6004</span>
+            </div>
+            <div class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <a href="mailto:info@brlfinancial.com" class="contact-email">info@brlfinancial.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tabs" id="portal-tabs">
+        <div class="tab" data-portal="Insured">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Insured
+        </div>
+        <div class="tab" data-portal="Insured Español">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          Insured Español
+        </div>
+        <div class="tab" data-portal="Agent">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          Agent
+        </div>
+        <div class="tab" data-portal="General Agent">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          General Agent
+        </div>
+        <div class="tab" data-portal="Sales Rep">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+          Sales Rep
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+    <div class="container">
+      <div class="main-content">
+        <div class="info-box">
+          <svg class="shield-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+          
+          <h1>Access Your BRL Financial Account</h1>
+          <p>Please select your login type from the tabs above to access your account.</p>
+          
+          <div class="features">
+            <div class="feature">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span class="feature-text">Secure connection</span>
+            </div>
+            <div class="feature">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span class="feature-text">24/7 access</span>
+            </div>
+          </div>
+        </div>
+        
+        <div id="loginForm" class="login-form" style="display: none;">
+          <h2 class="form-title" id="formTitle">Insured Login</h2>
+          
+          <form id="portalLoginForm" onsubmit="submitLoginForm(event)">
+            <div class="form-field">
+              <label for="accountCode" id="accountLabel">Account Code:</label>
+              <input type="text" id="accountCode" name="AccountCode" required>
+            </div>
+            
+            <div class="form-field">
+              <label for="password" id="passwordLabel">Password:</label>
+              <input type="password" id="password" name="Password" required>
+            </div>
+            
+            <button type="submit" class="submit-button">Log In</button>
+            
+            <div class="forgot-password">
+              <a href="#" onclick="alert('Password recovery feature would be implemented here.')">Forgot your password?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <div id="statusOverlay" class="status-overlay">
+    <div class="status-box">
+      <div class="spinner"></div>
+      <div class="status-text" id="statusText">Redirecting to portal...</div>
+    </div>
+  </div>
+  
+  <script>
+    // Portal URLs
+    const portalUrls = {
+      'Insured': 'https://www.fmweb3.com/FMBRL/FMInsuredLogin.asp',
+      'Insured Español': 'https://www.fmweb3.com/FMBRL/FMInsuredLogin.asp?Lang=S',
+      'Agent': 'https://www.fmweb3.com/FMBRL/FMAgentLogin.asp',
+      'General Agent': 'https://www.fmweb3.com/FMBRL/FMGALogin.asp',
+      'Sales Rep': 'https://www.fmweb3.com/FMBRL/FMSalesRepLogin.asp'
+    };
+    
+    // Handle tab selection
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const portalType = tab.getAttribute('data-portal');
+        redirectToPortal(portalType);
+      });
+    });
+    
+    // Redirect to the selected portal
+    function redirectToPortal(portalType) {
+      const statusOverlay = document.getElementById('statusOverlay');
+      const statusText = document.getElementById('statusText');
+      
+      statusText.textContent = `Redirecting to ${portalType} portal...`;
+      statusOverlay.style.display = 'flex';
+      
+      console.log(`Redirecting to ${portalType} portal...`);
+      
+      // Redirect after a short delay to show the status overlay
+      setTimeout(() => {
+        window.location.href = portalUrls[portalType];
+      }, 600);
+    }
+    
+    // Handle login form submission
+    function submitLoginForm(event) {
+      event.preventDefault();
+      
+      const accountCode = document.getElementById('accountCode').value;
+      const password = document.getElementById('password').value;
+      const portalType = document.getElementById('formTitle').getAttribute('data-portal');
+      
+      const statusOverlay = document.getElementById('statusOverlay');
+      const statusText = document.getElementById('statusText');
+      
+      statusText.textContent = `Logging in to ${portalType} portal...`;
+      statusOverlay.style.display = 'flex';
+      
+      console.log(`Submitting login for ${portalType} with account: ${accountCode}`);
+      
+      // Create and submit a form to the portal
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = portalUrls[portalType];
+      form.style.display = 'none';
+      
+      // Add account field
+      const accountField = document.createElement('input');
+      accountField.type = 'hidden';
+      accountField.name = 'AccountCode';
+      accountField.value = accountCode;
+      form.appendChild(accountField);
+      
+      // Add password field
+      const passwordField = document.createElement('input');
+      passwordField.type = 'hidden';
+      passwordField.name = 'Password';
+      passwordField.value = password;
+      form.appendChild(passwordField);
+      
+      // Add submit field
+      const submitField = document.createElement('input');
+      submitField.type = 'hidden';
+      submitField.name = 'Submit';
+      submitField.value = 'Submit';
+      form.appendChild(submitField);
+      
+      // Add language field for Spanish
+      if (portalType === 'Insured Español') {
+        const langField = document.createElement('input');
+        langField.type = 'hidden';
+        langField.name = 'Lang';
+        langField.value = 'S';
+        form.appendChild(langField);
+      }
+      
+      // Add form to body and submit
+      document.body.appendChild(form);
+      
+      setTimeout(() => {
+        try {
+          form.submit();
+        } catch (error) {
+          console.error('Form submission failed:', error);
+          window.location.href = portalUrls[portalType];
+        }
+      }, 600);
+    }
+  </script>
+</body>
+</html>

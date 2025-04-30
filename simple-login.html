@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Portal Auto Login</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 40px;
+      max-width: 600px;
+      margin: 0 auto;
+      padding-top: 50px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #0e7490;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo svg {
+      margin-right: 10px;
+    }
+    .login-container {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    h2 { 
+      margin-top: 0;
+      color: #0f172a;
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label { 
+      display: block; 
+      margin-bottom: 8px; 
+      font-weight: 600;
+      color: #334155;
+    }
+    input[type="text"], input[type="password"] { 
+      width: 100%; 
+      padding: 10px; 
+      font-size: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input:focus {
+      outline: 2px solid #0e7490;
+      border-color: transparent;
+    }
+    button { 
+      width: 100%;
+      padding: 12px 16px; 
+      background-color: #0e7490;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #0c4a6e;
+    }
+    .status {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f0fdfa;
+      border-left: 4px solid #0d9488;
+    }
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .footer a {
+      color: #0e7490;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .portal-select {
+      margin-bottom: 20px;
+    }
+    .portal-select select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
+    BRL Financial
+  </div>
+
+  <div class="login-container">
+    <h2>Login to Portal</h2>
+    
+    <form id="userInputForm" onsubmit="handleLogin(event)">
+      <div class="portal-select">
+        <label for="portalType">Portal Type:</label>
+        <select id="portalType" name="portalType">
+          <option value="Insured">Insured</option>
+          <option value="Insured Español">Insured Español</option>
+          <option value="Agent">Agent</option>
+          <option value="General Agent">General Agent</option>
+          <option value="Sales Rep">Sales Rep</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="accountCode">Account Code:</label>
+        <input type="text" id="accountCode" name="accountCode" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <button type="submit">Login to Portal</button>
+    </form>
+    
+    <div id="status" class="status">
+      Submitting to portal...
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>Need help? Contact us at <a href="mailto:info@brlfinancial.com">info@brlfinancial.com</a> or call <a href="tel:5612006004">561-200-6004</a></p>
+  </div>
+
+  <!-- Hidden form for auto-submission to the portal -->
+  <form id="autoLoginForm" method="POST" style="display:none;">
+    <input type="hidden" name="AccountCode" id="hiddenAccountCode">
+    <input type="hidden" name="Password" id="hiddenPassword">
+    <input type="hidden" name="Submit" value="Submit">
+    <input type="hidden" name="Lang" id="hiddenLang">
+  </form>
+
+  <script>
+    // Portal URLs
+    const portalUrls = {
+      'Insured': 'https://www.fmweb3.com/FMBRL/FMInsuredLogin.asp',
+      'Insured Español': 'https://www.fmweb3.com/FMBRL/FMInsuredLogin.asp',
+      'Agent': 'https://www.fmweb3.com/FMBRL/FMAgentLogin.asp',
+      'General Agent': 'https://www.fmweb3.com/FMBRL/FMGALogin.asp',
+      'Sales Rep': 'https://www.fmweb3.com/FMBRL/FMSalesRepLogin.asp'
+    };
+    
+    function handleLogin(event) {
+      event.preventDefault();
+      
+      // Show status
+      document.getElementById('status').style.display = 'block';
+      
+      // Get user input
+      const portalType = document.getElementById('portalType').value;
+      const accountCode = document.getElementById('accountCode').value;
+      const password = document.getElementById('password').value;
+
+      // Fill hidden form fields
+      document.getElementById('hiddenAccountCode').value = accountCode;
+      document.getElementById('hiddenPassword').value = password;
+      
+      // Set the form action based on portal type
+      const autoLoginForm = document.getElementById('autoLoginForm');
+      autoLoginForm.action = portalUrls[portalType];
+      
+      // Add language setting for Spanish portal
+      if (portalType === 'Insured Español') {
+        document.getElementById('hiddenLang').value = 'S';
+      } else {
+        document.getElementById('hiddenLang').value = '';
+      }
+
+      // Submit hidden form to the portal after a short delay
+      setTimeout(() => {
+        console.log(`Submitting to ${portalType} portal with account: ${accountCode}`);
+        document.getElementById('autoLoginForm').submit();
+      }, 500);
+    }
+  </script>
+</body>
+</html>

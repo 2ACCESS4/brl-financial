@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440px" height="200px" viewBox="0 0 1440 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="waveGradient1">
+            <stop stop-color="#0e703c" stop-opacity="0.08" offset="0%"></stop>
+            <stop stop-color="#00984a" stop-opacity="0.15" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="waveGradient2">
+            <stop stop-color="#00984a" stop-opacity="0.05" offset="0%"></stop>
+            <stop stop-color="#ff7e12" stop-opacity="0.12" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    
+    <!-- Wave 1 -->
+    <path d="M0,100 C240,150 480,50 720,100 C960,150 1200,50 1440,100 L1440,200 L0,200 Z" fill="url(#waveGradient1)"></path>
+    
+    <!-- Wave 2 -->
+    <path d="M0,120 C240,170 480,70 720,120 C960,170 1200,70 1440,120 L1440,200 L0,200 Z" fill="url(#waveGradient2)"></path>
+</svg>
